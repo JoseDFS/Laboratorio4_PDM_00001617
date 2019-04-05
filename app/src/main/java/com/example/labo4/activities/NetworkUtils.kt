@@ -12,7 +12,7 @@ class NetworkUtils {
     val MOVIES_API_BASEURL = "http://www.omdbapi.com/"
     val TOKEN_API = "f16fd0bf"
 
-    fun buiildSearchUrl(movieName: String): URL {
+    fun buildSearchUrl(movieName: String): URL {
         val buildUri = Uri.parse(MOVIES_API_BASEURL)
                 .buildUpon()
                 .appendQueryParameter("apikey", TOKEN_API)
@@ -24,24 +24,25 @@ class NetworkUtils {
                 URL("")
         )
     }
-}
 
-@Throws(IOException::class)
-fun getResponseFromHttpUrl(url:URL):String{
-    val urlConnection = url.openConnection() as HttpURLConnection
-    try {
-        val `in`= urlConnection.inputStream
 
-        val scanner = Scanner(`in`)
-        scanner.useDelimiter("\\A")
+    @Throws(IOException::class)
+    fun getResponseFromHttpUrl(url: URL): String {
+        val urlConnection = url.openConnection() as HttpURLConnection
+        try {
+            val `in` = urlConnection.inputStream
 
-        val hasInput = scanner.hasNext()
-        return if (hasInput){
-            scanner.next()
-        }else{
-            ""
+            val scanner = Scanner(`in`)
+            scanner.useDelimiter("\\A")
+
+            val hasInput = scanner.hasNext()
+            return if (hasInput) {
+                scanner.next()
+            } else {
+                ""
+            }
+        } finally {
+            urlConnection.disconnect()
         }
-    }finally {
-        urlConnection.disconnect()
     }
 }
